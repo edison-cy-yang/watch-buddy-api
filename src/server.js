@@ -8,8 +8,7 @@ const express    = require("express");
 const bodyParser = require("body-parser");
 const app        = express();
 const morgan     = require('morgan');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+require('./services/passport');
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -30,11 +29,13 @@ app.use(express.static("public"));
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const widgetsRoutes = require("./routes/widgets");
+const authRoutes = require("./routes/auth");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
 app.use("/api/widgets", widgetsRoutes(db));
+app.use("/auth", authRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 
@@ -45,28 +46,6 @@ app.get("/", (req, res) => {
   res.send("{hello: world}");
 });
 
-////OAUTH
-passport.use(
-  new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback'
-  }, (accessToken, refreshToken, profile, done) => {
-    console.log(accessToken);
-    console.log('refresh token ', refreshToken);
-    console.log('profile ', profile);
-    console.log('done ', done);
-  })
-);
-
-app.get(
-  '/auth/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email']
-  })
-);
-
-app.get('/auth/google/callback', passport.authenticate('google'));
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT} in ${ENV}`);
