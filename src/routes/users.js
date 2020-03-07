@@ -7,6 +7,7 @@
 
 const express = require('express');
 const router  = express.Router();
+const passport = require('passport');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -21,5 +22,15 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get(
+    '/auth/google',
+    passport.authenticate('google', {
+      scope: ['profile', 'email']
+    })
+  );
+
+  router.get('/auth/google/callback', passport.authenticate('google'));
+
   return router;
 };
