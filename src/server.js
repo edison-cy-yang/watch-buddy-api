@@ -8,6 +8,8 @@ const express    = require("express");
 const bodyParser = require("body-parser");
 const app        = express();
 const morgan     = require('morgan');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -42,6 +44,24 @@ app.use("/api/widgets", widgetsRoutes(db));
 app.get("/", (req, res) => {
   res.send("{hello: world}");
 });
+
+////OAUTH
+passport.use(
+  new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: '/auth/google/callback'
+  }, (accessToken) => {
+    console.log(accessToken);
+  })
+);
+
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
+);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT} in ${ENV}`);
