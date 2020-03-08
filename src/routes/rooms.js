@@ -27,5 +27,17 @@ module.exports = (db) => {
     }
   });
 
+  //Create a new room
+  router.post("/", async (req, res) => {
+    const room = req.body.room;
+    const owner_id = req.body.owner_id;
+    try {
+      const newRoom = await roomsFn.addRoom(db, room, owner_id);
+      res.json(newRoom);
+    } catch(err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   return router
 }
