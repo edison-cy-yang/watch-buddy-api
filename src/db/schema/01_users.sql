@@ -5,5 +5,5 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  googleId TEXT NOT NULL
+  google_id TEXT NOT NULL
 );
