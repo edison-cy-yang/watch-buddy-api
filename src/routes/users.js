@@ -37,5 +37,14 @@ module.exports = (db) => {
       res.redirect('/');
     });
 
+  router.get('/auth/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+  })
+
+  router.get('/auth/current_user', (req, res) => {
+    res.send(req.user);
+  })
+
   return router;
 };
