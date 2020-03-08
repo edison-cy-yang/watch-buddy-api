@@ -18,7 +18,10 @@ module.exports = (db) => {
       //         done(null, user);
       //     });
       usersFn.getUserByGoogleId(db, id).then(user => {
-        done(null, user);
+        if (user)
+          done(null, user);
+        else
+          done(null, false);
       });
   });
 
