@@ -16,5 +16,16 @@ module.exports = (db) => {
     }
   });
 
+  //get a single room
+  router.get("/:id", async (req, res) => {
+    const roomId = req.params.id;
+    try {
+      const room = await roomsFn.getRoomById(db, roomId);
+      res.json(room);
+    } catch(err) {
+      res.status(404).json({ error: err.message });
+    }
+  });
+
   return router
 }
