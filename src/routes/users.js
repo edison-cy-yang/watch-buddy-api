@@ -30,7 +30,12 @@ module.exports = (db) => {
     })
   );
 
-  router.get('/auth/google/callback', passport.authenticate('google'));
+  router.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res) => {
+      res.redirect('/');
+    });
 
   return router;
 };
