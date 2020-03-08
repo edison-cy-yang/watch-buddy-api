@@ -8,12 +8,28 @@ const express    = require("express");
 const bodyParser = require("body-parser");
 const app        = express();
 const morgan     = require('morgan');
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+
 
 // PG database client/connection setup
 const { Pool } = require('pg');
 const dbParams = require('./lib/db.js');
 const db = new Pool(dbParams);
 db.connect();
+
+require('./services/passport')(db);
+
+app.use(
+  cookieSession({
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      keys: ['xiutbgisergnpserigun']
+  })
+);
+
+app.use(passport.initialize());
+
+app.use(passport.session());
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -31,8 +47,9 @@ const widgetsRoutes = require("./routes/widgets");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
-app.use("/api/users", usersRoutes(db));
-app.use("/api/widgets", widgetsRoutes(db));
+app.use("/users", usersRoutes(db));
+app.use("/widgets", widgetsRoutes(db));
+// app.use("/auth", authRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 
@@ -42,6 +59,7 @@ app.use("/api/widgets", widgetsRoutes(db));
 app.get("/", (req, res) => {
   res.send("{hello: world}");
 });
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT} in ${ENV}`);
