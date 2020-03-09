@@ -36,6 +36,7 @@ app.use(passport.session());
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
@@ -43,12 +44,12 @@ app.use(express.static("public"));
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
-const widgetsRoutes = require("./routes/widgets");
+const roomsRoutes = require("./routes/rooms");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/users", usersRoutes(db));
-app.use("/widgets", widgetsRoutes(db));
+app.use("/rooms", roomsRoutes(db));
 // app.use("/auth", authRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
