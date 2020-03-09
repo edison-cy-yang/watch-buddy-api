@@ -45,11 +45,13 @@ app.use(express.static("public"));
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const roomsRoutes = require("./routes/rooms");
+const friendsRoutes = require("./routes/friends");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/users", usersRoutes(db));
 app.use("/rooms", roomsRoutes(db));
+app.use("/friends", friendsRoutes(db));
 // app.use("/auth", authRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
