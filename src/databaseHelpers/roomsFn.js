@@ -40,3 +40,18 @@ const addRoom = (db, room, owner_id) => {
 };
 
 exports.addRoom = addRoom;
+
+const editRoom = (db, room, id) => {
+  let queryParams = [room.title, room.video_url, id];
+  let queryString = `
+    UPDATE rooms
+    SET title = $1, video_url = $2
+    WHERE id = $3
+    RETURNING *;
+  `;
+  return db.query(queryString, queryParams).then(res => {
+    return res.rows[0];
+  });
+};
+
+exports.editRoom = editRoom;

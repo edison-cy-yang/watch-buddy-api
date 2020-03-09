@@ -39,5 +39,16 @@ module.exports = (db) => {
     }
   });
 
+  router.post("/:id", async (req, res) => {
+    const room = req.body.room;
+    const id = req.params.id;
+    try {
+      const modifiedRoom = await roomsFn.editRoom(db, room, id);
+      res.json(modifiedRoom);
+    } catch(err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   return router
 }
