@@ -43,7 +43,7 @@ module.exports = (db) => {
   })
 
   router.get('/auth/current_user', (req, res) => {
-    res.send(req.user);
+    res.json(req.user);
   })
 
   return router;
