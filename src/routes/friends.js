@@ -16,5 +16,17 @@ module.exports = (db) => {
     }
   });
 
+  router.post("/:id/accept", async (req, res) => {
+    const currentUserId = req.body.currentUserId;
+    const friendId = req.body.friendId;
+    const relationshipId = req.params.id;
+    try {
+      await relationshipsFn.acceptFriendRequest(db, relationshipId, currentUserId, friendId);
+      res.json({success: "yez"});
+    } catch(err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   return router;
 }
