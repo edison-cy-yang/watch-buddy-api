@@ -1,10 +1,12 @@
 const getAllRoomsByFriends = (db, id) => {
   let queryParams = [id];
   let queryString = `
-    SELECT rooms.*
+    SELECT rooms.*, users.name
     FROM relationships
     JOIN rooms ON relationships.user_two = rooms.owner_id
-    where relationships.user_one = $1 AND relationships.status = 1;
+    JOIN users ON rooms.owner_id = users.id
+    where relationships.user_one = $1 AND relationships.status = 1
+    ORDER BY users.id;
   `;
   return db.query(queryString, queryParams).then(res => {
     return res.rows;
