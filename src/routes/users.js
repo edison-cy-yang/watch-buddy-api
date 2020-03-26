@@ -34,12 +34,12 @@ module.exports = (db) => {
     '/auth/google/callback',
     passport.authenticate('google'),
     (req, res) => {
-      res.redirect('/');
+      res.redirect(`${process.env.CLIENT_URL}`);
     });
 
   router.get('/auth/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.redirect(`${process.env.CLIENT_URL}`);
   })
 
   router.get('/auth/current_user', (req, res) => {
