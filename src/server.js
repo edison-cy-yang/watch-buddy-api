@@ -86,6 +86,10 @@ io.on("connection", socket => {
   socket.on('pause', () => {
     io.sockets.in(chatRoom).emit('pause');
   })
+
+  socket.on('seek', (time) => {
+    io.sockets.in(chatRoom).emit('seek', time);
+  })
 });
 
 
