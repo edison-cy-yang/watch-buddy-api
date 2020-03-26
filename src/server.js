@@ -82,6 +82,10 @@ io.on("connection", socket => {
   socket.on("play", () => {
     io.sockets.in(chatRoom).emit('play');
   });
+
+  socket.on('pause', () => {
+    io.sockets.in(chatRoom).emit('pause');
+  })
 });
 
 
