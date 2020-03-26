@@ -10,6 +10,8 @@ const app        = express();
 const morgan     = require('morgan');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 
 // PG database client/connection setup
@@ -63,7 +65,26 @@ app.get("/", (req, res) => {
   res.send("{hello: world}");
 });
 
+io.on("connection", socket => {
+  console.log("a user connected");
 
-app.listen(PORT, () => {
+  let chatRoom;
+  socket.on('room', (room) => {
+    socket.join(room.roomId);
+    chatRoom = room.roomId;
+
+    io.of('/').in(chatRoom).clients((err, clients) => {
+      console.log("number of people in room "+ chatRoom + " : " + clients.length);
+    })
+    // io.sockets.in(chatRoom).emit('play');
+  })
+
+  socket.on("play", () => {
+    io.sockets.in(chatRoom).emit('play');
+  });
+});
+
+
+server.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT} in ${ENV}`);
 });
