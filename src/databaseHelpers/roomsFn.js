@@ -30,10 +30,10 @@ const getRoomById = (db, roomId) => {
 exports.getRoomById = getRoomById;
 
 const addRoom = (db, room, owner_id) => {
-  let queryParams = [room.title, room.video_url, owner_id];
+  let queryParams = [room.uid, room.title, room.video_url, owner_id];
   let queryString = `
-    INSERT INTO rooms (title, video_url, owner_id)
-    VALUES ($1, $2, $3)
+    INSERT INTO rooms (uid, title, video_url, owner_id)
+    VALUES ($1, $2, $3, $4)
     RETURNING *;
   `;
   return db.query(queryString, queryParams).then(res => {
@@ -57,3 +57,17 @@ const editRoom = (db, room, id) => {
 };
 
 exports.editRoom = editRoom;
+
+const getRoomByUid = (db, uid) => {
+  let queryParams = [uid];
+  let queryString = `
+    SELECT *
+    FROM rooms
+    WHERE uid = $1;
+  `;
+  return db.query(queryString, queryParams).then(res => {
+    return res.rows[0];
+  });
+};
+
+exports.getRoomByUid = getRoomByUid;
