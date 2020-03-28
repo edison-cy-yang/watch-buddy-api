@@ -30,7 +30,8 @@ module.exports = (db) => {
     new GoogleStrategy({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/users/auth/google/callback'
+      callbackURL: '/users/auth/google/callback',
+      proxy: true
     }, async (accessToken, refreshToken, profile, done) => {
       const existingUser = await usersFn.getUserByGoogleId(db, profile.id);
       if (existingUser) {
