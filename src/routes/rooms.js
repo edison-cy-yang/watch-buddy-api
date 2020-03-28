@@ -27,6 +27,17 @@ module.exports = (db) => {
     }
   });
 
+  //get a single room by uid
+  router.get("/uid/:uid", async (req, res) => {
+    const uid = req.params.uid;
+    try {
+      const room = await roomsFn.getRoomByUid(db, uid);
+      res.json(room);
+    } catch(err) {
+      res.status(404).json({ error: err.message });
+    }
+  });
+
   //Create a new room
   router.post("/", async (req, res) => {
     const room = req.body.room;
