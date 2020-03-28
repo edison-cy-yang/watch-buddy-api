@@ -80,6 +80,7 @@ io.on("connection", socket => {
   })
 
   socket.on("play", () => {
+    console.log(`socket ${socket.id} sent the play command`);
     io.sockets.in(chatRoom).emit('play');
   });
 
