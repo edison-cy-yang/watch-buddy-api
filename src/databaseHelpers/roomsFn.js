@@ -29,8 +29,9 @@ const getRoomById = (db, roomId) => {
 
 exports.getRoomById = getRoomById;
 
-const addRoom = (db, room, owner_id) => {
-  let queryParams = [room.uid, room.title, room.video_url, owner_id];
+const addRoom = (db, room, owner_id, uid) => {
+  let queryParams = [uid, room.title, room.video_url, owner_id];
+  console.log(queryParams);
   let queryString = `
     INSERT INTO rooms (uid, title, video_url, owner_id)
     VALUES ($1, $2, $3, $4)

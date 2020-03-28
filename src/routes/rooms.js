@@ -38,12 +38,23 @@ module.exports = (db) => {
     }
   });
 
+  function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
+
   //Create a new room
   router.post("/", async (req, res) => {
     const room = req.body.room;
     const owner_id = req.body.owner_id;
+    const uid = makeid(11);
     try {
-      const newRoom = await roomsFn.addRoom(db, room, owner_id);
+      const newRoom = await roomsFn.addRoom(db, room, owner_id, uid);
       res.json(newRoom);
     } catch(err) {
       res.status(500).json({ error: err.message });
