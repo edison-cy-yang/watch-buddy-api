@@ -12,6 +12,8 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const cors = require('cors');
+app.use(cors({credentials: true, origin: process.env.CLIENT_URL}));
 
 
 // PG database client/connection setup
