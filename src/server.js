@@ -83,15 +83,18 @@ io.on("connection", socket => {
 
   socket.on("play", () => {
     console.log(`socket ${socket.id} sent the play command`);
-    io.sockets.in(chatRoom).emit('play');
+    // io.sockets.in(chatRoom).emit('play');
+    socket.broadcast.to(chatRoom).emit('play');
   });
 
   socket.on('pause', () => {
-    io.sockets.in(chatRoom).emit('pause');
+    // io.sockets.in(chatRoom).emit('pause');
+    socket.broadcast.to(chatRoom).emit('pause');
   })
 
   socket.on('seek', (time) => {
-    io.sockets.in(chatRoom).emit('seek', time);
+    // io.sockets.in(chatRoom).emit('seek', time);
+    socket.broadcast.to(chatRoom).emit('seek', time);
   })
 });
 
