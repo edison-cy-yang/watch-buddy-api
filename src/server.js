@@ -96,6 +96,24 @@ io.on("connection", socket => {
     // io.sockets.in(chatRoom).emit('seek', time);
     socket.broadcast.to(chatRoom).emit('seek', time);
   })
+
+  socket.on('plays', () => {
+    console.log("plays");
+    socket.broadcast.to(chatRoom).emit('plays');
+    // io.sockets.in(chatRoom).emit('plays');
+  })
+
+  socket.on('pauses', () => {
+    console.log("pauses");
+    // socket.broadcast.to(chatRoom).emit('pause');
+    // io.sockets.in(chatRoom).emit('pauses');
+    socket.broadcast.to(chatRoom).emit('pauses');
+  })
+
+  socket.on('test', () => {
+    console.log("test");
+    socket.broadcast.to(chatRoom).emit('test');
+  })
 });
 
 
