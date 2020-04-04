@@ -114,6 +114,11 @@ io.on("connection", socket => {
     console.log("test");
     socket.broadcast.to(chatRoom).emit('test');
   })
+
+  socket.on('message', (msg) => {
+    console.log(msg);
+    socket.broadcast.to(chatRoom).emit('message', msg);
+  })
 });
 
 
