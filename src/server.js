@@ -122,13 +122,24 @@ io.on("connection", socket => {
     socket.broadcast.to(chatRoom).emit('message', msg);
   })
 
-  socket.on('disconnect', () => {
-    io.of('/').in(chatRoom).clients((err, clients) => {
-      console.log(clients);
-      console.log("number of people in room "+ chatRoom + " : " + clients.length);
-      io.sockets.in(chatRoom).emit('someone left', {numOfPeople: clients.length});
+  socket.on('leave', () => {
+    console.log("leaving");
+    socket.leave(chatRoom, () => {
+      io.of('/').in(chatRoom).clients((err, clients) => {
+        console.log(clients);
+        console.log("number of people in room "+ chatRoom + " : " + clients.length);
+        io.sockets.in(chatRoom).emit('someone left', {numOfPeople: clients.length});
+      })
     })
-  })
+  });
+
+  // socket.on('disconnect', () => {
+  //   io.of('/').in(chatRoom).clients((err, clients) => {
+  //     console.log(clients);
+  //     console.log("number of people in room "+ chatRoom + " : " + clients.length);
+  //     io.sockets.in(chatRoom).emit('someone left', {numOfPeople: clients.length});
+  //   })
+  // })
 });
 
 
