@@ -76,9 +76,11 @@ io.on("connection", socket => {
     chatRoom = room.roomId;
 
     io.of('/').in(chatRoom).clients((err, clients) => {
+      console.log(clients);
       console.log("number of people in room "+ chatRoom + " : " + clients.length);
+      io.sockets.in(chatRoom).emit('new member', {numOfPeople: clients.length});
     })
-    // io.sockets.in(chatRoom).emit('play');
+
   })
 
   socket.on("play", () => {
@@ -118,6 +120,14 @@ io.on("connection", socket => {
   socket.on('message', (msg) => {
     console.log(msg);
     socket.broadcast.to(chatRoom).emit('message', msg);
+  })
+
+  socket.on('disconnect', () => {
+    io.of('/').in(chatRoom).clients((err, clients) => {
+      console.log(clients);
+      console.log("number of people in room "+ chatRoom + " : " + clients.length);
+      io.sockets.in(chatRoom).emit('someone left', {numOfPeople: clients.length});
+    })
   })
 });
 
